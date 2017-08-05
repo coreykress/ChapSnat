@@ -11,7 +11,7 @@ app.get('/', function (req, res) {
 app.post('/new', function(req, res) {
      var busboy = new Busboy({headers: req.headers});
      busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-       var saveTo = path.join('.', filename);
+       var saveTo = path.join('./appdata', filename);
        console.log('logged');
        file.pipe(fs.createWriteStream(saveTo));
      });
