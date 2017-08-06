@@ -1,5 +1,7 @@
 node_modules
 appdata/*
 
+.idea
+
 #keep the folder around w/o any contents
 !appdata/.gitkeep

@@ -54,6 +54,22 @@ app.post('/new', function(req, res) {
      return req.pipe(busboy);
 });
 
+app.get('*', function(req, res, next) {
+    var err = new Error();
+    err.status = 404;
+    next(err);
+});
+
+//404 handling
+app.use(function (err, req, res, next) {
+    if (err.status !== 404) {
+        next(err);
+    }
+
+    res.status(404);
+    res.send('Page not found');
+});
+
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!')
 });
