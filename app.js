@@ -2,7 +2,11 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const Busboy = require('busboy');
+const Config = require('./config.js');
 const app = express();
+const env_vars = Config();
+
+console.log(env_vars);
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
