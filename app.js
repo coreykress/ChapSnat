@@ -5,6 +5,20 @@ const Busboy = require('busboy');
 const Config = require('./config.js');
 const app = express();
 const env_vars = Config();
+const Db = require('mongodb').Db;
+const MongoClient = require('mongodb').MongoClient;
+const Server = require('mongodb').Server;
+const ReplSetServers = require('mongodb').ReplSetServers;
+const ObjectID = require('mongodb').ObjectID;
+const Binary = require('mongodb').Binary;
+const GridStore = require('mongodb').GridStore;
+const Grid = require('mongodb').Grid;
+const Code = require('mongodb').Code;
+const BSON = require('mongodb').BSON;
+const assert = require('assert');
+
+// start the db server, janky because it happens every time the app starts.
+const db = new Db('test', new Server('localhost', 27017));
 
 console.log(env_vars);
 
@@ -26,6 +40,14 @@ app.post('/new', function (req, res, next) {
     busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
         var saveTo = path.join('./appdata', filename);
 
+        // get the desired table from the db.
+
+        db.open(function(err, db){
+          var collection = db.collection("filePaths");
+          collection.insert({location : saveTo});
+          //collection.find().forEach(console.log());
+          db.close();
+        });
         //file.on('limit', function() {
         //    console.log('file too large');
         //    err = new Error();
